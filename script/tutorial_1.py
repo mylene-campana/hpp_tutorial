@@ -17,9 +17,26 @@ r (q_goal)
 
 ps.loadObstacleFromUrdf ("iai_maps", "kitchen_area")
 
-ps.setInitialConfig (q_init)
-ps.addGoalConfig (q_goal)
-ps.solve ()
+ps.selectPathOptimizer ("None")
+import datetime as dt
+totalTime = dt.timedelta (0)
+totalNumberNodes = 0
+for i in range (20):
+    ps.client.problem.clearRoadmap ()
+    ps.resetGoalConfigs ()
+    ps.setInitialConfig (q_init)
+    ps.addGoalConfig (q_goal)
+    t1 = dt.datetime.now ()
+    ps.solve ()
+    t2 = dt.datetime.now ()
+    totalTime += t2 - t1
+    print (t2-t1)
+    n = len (ps.client.problem.nodes ())
+    totalNumberNodes += n
+    print ("Number nodes: " + str(n))
+
+print ("Average time: " + str ((totalTime.seconds+1e-6*totalTime.microseconds)/20.))
+print ("Average number nodes: " + str (totalNumberNodes/20.))
 
 from hpp_ros import PathPlayer
 pp = PathPlayer (robot.client, r)
