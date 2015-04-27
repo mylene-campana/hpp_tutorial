@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # Copyright (c) 2014 CNRS
-# Author: Florent Lamiraux
+# Author: Florent Lamiraux, Mylene Campana
 #
 # This file is part of hpp-corbaserver.
 # hpp-corbaserver is free software: you can redistribute it
@@ -19,7 +19,7 @@
 from hpp.corbaserver.robot import Robot as Parent
 
 ##
-#  Control of robot PR2 in hpp
+#  Control of robot PR2 with set in hpp
 #
 #  This class implements a client to the corba server implemented in
 #  hpp-corbaserver. It derive from class hpp.corbaserver.robot.Robot.
@@ -33,6 +33,10 @@ class Robot (Parent):
     ##
     #  Information to retrieve urdf and srdf files.
     packageName = "hpp_tutorial"
+    meshPackageName = "hpp_tutorial"
+    # Be sure that 'pr2_description', containing PR2 meshes, 
+    # is accessible from hpp_tutorial location
+    rootJointType = "planar"
     ##
     #  Information to retrieve urdf and srdf files.
     urdfName = "pr2_with_set"
@@ -40,5 +44,5 @@ class Robot (Parent):
     srdfSuffix = ""
 
     def __init__ (self, robotName, load = True):
-        Parent.__init__ (self, robotName, "planar", load)
+        Parent.__init__ (self, robotName, self.rootJointType, load)
         self.tf_root = "base_footprint"

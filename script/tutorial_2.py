@@ -3,7 +3,7 @@
 import time
 from hpp.corbaserver import ProblemSolver
 from hpp.corbaserver.pr2 import Robot
-robot = Robot ('pr2')
+robot = Robot ('pr2') #35 DOF
 robot.setJointBounds ("base_joint_xy", [-4, -3, -5, -3])
 ps = ProblemSolver (robot)
 
@@ -41,17 +41,23 @@ r (q_goal)
 ps.loadObstacleFromUrdf ("iai_maps", "kitchen_area", "") # environment
 ps.setInitialConfig (q_init); ps.addGoalConfig (q_goal)
 
+#ps.selectPathPlanner ("VisibilityPrmPlanner") 
 begin=time.time()
 ps.solve ()
 end=time.time()
 print "Solving time: "+str(end-begin)
 
+ps.addPathOptimizer("GradientBased")
 begin=time.time()
 ps.optimizePath(0)
 end=time.time()
 print "Optim time: "+str(end-begin)
 cl = robot.client
 cl.problem.getIterationNumber ()
+cl.problem.getComputationTime ()
+
+ps.pathLength(0)
+ps.pathLength(1)
 
 begin=time.time()
 ps.optimizePath(1)
@@ -59,15 +65,50 @@ end=time.time()
 print "Optim2 time: "+str(end-begin)
 cl.problem.getIterationNumber ()
 
-len(ps.getWaypoints (0))
 ps.pathLength(0)
 ps.pathLength(1)
 ps.pathLength(2)
 
+len(ps.getWaypoints (0))
+
+ps.optimizePath(3)
+ps.pathLength(4)
+cl.problem.getIterationNumber ()
+
 pp (0)
 pp (1)
+
+## Video recording
+r.startCapture ("capture","png")
+pp(1)
+r.stopCapture ()
+r.startCapture ("capture","png")
+pp(2)
+r.stopCapture ()
+#ffmpeg -r 50 -i capture_0_%d.png -r 25 -vcodec libx264 video.mp4
 
 robot.getJointNames ()
 robot.getJointPosition ("torso_lift_joint")
 r(ps.configAtParam(0,5))
 
+ps.configAtParam(0,2)[0]
+ps.configAtParam(0,6)[0]
+ps.configAtParam(0,13)[0]
+ps.getWaypoints (0)[1][0]
+
+ps.configAtParam(0,2)[1]
+ps.configAtParam(0,6)[1]
+ps.configAtParam(0,13)[1]
+ps.getWaypoints (0)[1][1]
+
+ps.configAtParam(1,2)[0]
+ps.configAtParam(1,6)[0]
+ps.configAtParam(1,13)[0]
+ps.getWaypoints (1)[1][0]
+ps.getWaypoints (1)[5][0]
+
+ps.configAtParam(1,2)[1]
+ps.configAtParam(1,6)[1]
+ps.configAtParam(1,13)[1]
+ps.getWaypoints (1)[1][1]
+ps.getWaypoints (1)[5][1]

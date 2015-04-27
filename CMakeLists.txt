@@ -66,11 +66,13 @@ install(FILES
   )
 install(FILES
   urdf/pr2.urdf
+  urdf/pr2_with_set.urdf
   urdf/box.urdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
   )
 install(FILES
   srdf/pr2.srdf
+  srdf/pr2_with_set.srdf
   srdf/pr2_manipulation.srdf
   srdf/box.srdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/srdf
@@ -88,6 +90,10 @@ install (FILES
   src/hpp/corbaserver/manipulation/pr2/robot.py
   src/hpp/corbaserver/manipulation/pr2/__init__.py
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/manipulation/pr2)
+install (FILES
+  src/hpp/corbaserver/pr2_with_set/robot.py
+  src/hpp/corbaserver/pr2_with_set/__init__.py
+  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/pr2_with_set)
 
 # Installation for documentation
 install(FILES
@@ -98,6 +104,7 @@ install(FILES
   )
 install(FILES
   urdf/pr2.urdf
+  urdf/pr2_with_set.urdf
   urdf/box.urdf
   DESTINATION
   ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME}/doxygen-html/urdf
@@ -105,6 +112,7 @@ install(FILES
 install(FILES
   script/tutorial_1.py
   script/tutorial_2.py
+  script/tutorial_3.py
   DESTINATION
   ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME}/doxygen-html/script
   )

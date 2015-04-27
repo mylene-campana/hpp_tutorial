@@ -3136,8 +3136,9 @@
     <material>PR2/Blue</material>
   </gazebo>
   
-  <joint name="l_set_joint" type="fixed"> <!-- joint in the center of the set -->
-    <origin xyz="0.0 0.0 0.0" rpy="0 -1.57079632679 -1.57079632679"/> 
+  <!-- joint NOT in the center of the set but at 'l_wrist_flex_joint' position -->
+  <joint name="j_set_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 -1.57079632679 -1.57079632679"/> 
     <parent link="l_gripper_palm_link"/>
     <child link="l_set"/>
   </joint>
@@ -3161,4 +3162,63 @@
       </geometry>
     </collision>
   </link>
+  
+  <joint name="j_marker_set" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0.386"/> 
+    <parent link="l_set"/>
+    <child link="l_marker_set"/>
+  </joint>
+  
+  <!-- marker RELATIVE TO SET to show position constraint (of 'holding' the set) location -->
+  <link name="l_marker_set">
+    <visual>
+    <!--0.841 0.001 -0.0248-->
+    <!--0.845 0 0.027-->
+      <origin xyz="0.845 0 0.027" rpy="0 0 0" />
+      <geometry>
+        <box size="0.026 0.026 0.026"/>
+      </geometry>
+      <material name="Blue">
+        <color rgba="0 0 0.9 1"/>
+      </material>
+    </visual>
+  </link>
+  
+  <joint name="j_marker_up" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/> 
+    <parent link="r_gripper_r_finger_tip_link"/>
+    <child link="l_marker_up"/>
+  </joint>
+   
+  <!-- marker RELATIVE TO 'r_gripper_r_finger_tip_joint' at (0,0,0) location -->
+  <link name="l_marker_up">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+      <material name="Red">
+        <color rgba="0.9 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+  
+  <!--<joint name="j_marker_down" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/> 
+    <parent link="r_gripper_l_finger_tip_link"/>
+    <child link="l_marker_down"/>
+  </joint>-->
+
+  <!-- marker RELATIVE TO 'r_gripper_l_finger_tip_joint' at (0,0,0) location -->
+  <!--<link name="l_marker_down">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.025 0.025 0.025"/>
+      </geometry>
+      <material name="Green">
+        <color rgba="0 0.9 0 1"/>
+      </material>
+    </visual>
+  </link>-->
 </robot>
