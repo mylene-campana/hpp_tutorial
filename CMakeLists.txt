@@ -33,10 +33,6 @@ FINDPYTHON()
 
 SETUP_PROJECT()
 
-# Catkin stuff
-FIND_PACKAGE(catkin)
-CATKIN_PACKAGE()
-
 # Activate hpp-util logging if requested
 SET (HPP_DEBUG FALSE CACHE BOOL "trigger hpp-util debug output")
 IF (HPP_DEBUG)
@@ -60,14 +56,14 @@ SET(CATKIN_PACKAGE_SHARE_DESTINATION
   ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 
 install(FILES
-  launch/tutorial.launch
-  launch/tutorial_manipulation.launch
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+  package.xml
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   )
 install(FILES
   urdf/pr2.urdf
   urdf/pr2_with_set.urdf
   urdf/box.urdf
+  urdf/rod.urdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
   )
 install(FILES
@@ -75,17 +71,17 @@ install(FILES
   srdf/pr2_with_set.srdf
   srdf/pr2_manipulation.srdf
   srdf/box.srdf
+  srdf/rod.srdf
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/srdf
-  )
-install(FILES
-  rviz/config.rviz
-  rviz/config_manipulation.rviz
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz
   )
 install (FILES
   src/hpp/corbaserver/pr2/robot.py
   src/hpp/corbaserver/pr2/__init__.py
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/pr2)
+install (FILES
+  src/hpp/corbaserver/rod/robot.py
+  src/hpp/corbaserver/rod/__init__.py
+  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/rod)
 install (FILES
   src/hpp/corbaserver/manipulation/pr2/robot.py
   src/hpp/corbaserver/manipulation/pr2/__init__.py
@@ -96,12 +92,6 @@ install (FILES
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/pr2_with_set)
 
 # Installation for documentation
-install(FILES
-  launch/tutorial.launch
-  launch/tutorial_manipulation.launch
-  DESTINATION
-  ${CMAKE_INSTALL_DATAROOTDIR}/doc/${PROJECT_NAME}/doxygen-html/launch
-  )
 install(FILES
   urdf/pr2.urdf
   urdf/pr2_with_set.urdf

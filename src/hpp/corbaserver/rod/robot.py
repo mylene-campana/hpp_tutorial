@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2014 CNRS
+# Copyright (c) 2015 CNRS
 # Author: Florent Lamiraux
 #
 # This file is part of hpp_tutorial.
@@ -19,7 +19,7 @@
 from hpp.corbaserver.robot import Robot as Parent
 
 ##
-#  Control of robot PR2 in hpp
+#  Rod robot in hpp
 #
 #  This class implements a client to the corba server implemented in
 #  hpp-corbaserver. It derive from class hpp.corbaserver.robot.Robot.
@@ -33,14 +33,14 @@ class Robot (Parent):
     ##
     #  Information to retrieve urdf and srdf files.
     packageName = "hpp_tutorial"
-    meshPackageName = "pr2_description"
+    meshPackageName = "hpp_tutorial"
     rootJointType = "planar"
     ##
     #  Information to retrieve urdf and srdf files.
-    urdfName = "pr2"
+    urdfName = "rod"
     urdfSuffix = ""
     srdfSuffix = ""
 
     def __init__ (self, robotName, load = True):
         Parent.__init__ (self, robotName, self.rootJointType, load)
-        self.tf_root = "base_footprint"
+        self.tf_root = "base_link"
