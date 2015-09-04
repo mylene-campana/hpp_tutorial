@@ -34,38 +34,42 @@ robot.isConfigValid(q2)
 
 ps.setInitialConfig (q1); ps.addGoalConfig (q2)
 
+#ps.selectPathValidation ("Dichotomy", 0.)
 #ps.selectPathPlanner ("VisibilityPrmPlanner")
 
 ps.solve ()
 ps.pathLength(0)
 
+ps.addPathOptimizer('RandomShortcut')
+ps.optimizePath (0)
+ps.pathLength(1)
+
+ps.clearPathOptimizers()
 ps.addPathOptimizer("GradientBased")
 ps.optimizePath (0)
 ps.numberPaths()
 ps.pathLength(ps.numberPaths()-1)
+
 pp(ps.numberPaths()-1)
 
-ps.clearPathOptimizers()
-ps.addPathOptimizer('RandomShortcut')
-ps.optimizePath (0)
-ps.pathLength(1)
+
 
 len(ps.getWaypoints (0))
 
 
 # Add light to scene
-lightName = "li"
+lightName = "li4"
 r.client.gui.addLight (lightName, r.windowId, 0.1, [0.4,0.4,0.4,0.5])
 r.client.gui.addToGroup (lightName, r.sceneName)
-r.client.gui.applyConfiguration (lightName, [5,0,1,1,0,0,0])
+r.client.gui.applyConfiguration (lightName, [2,1,1,1,0,0,0])
 r.client.gui.refresh ()
 
 
 ## Video recording
 pp.dt = 0.02
 r.startCapture ("capture","png")
-pp(0)
-#pp(ps.numberPaths()-1)
+#pp(1)
+pp(ps.numberPaths()-1)
 r.stopCapture ()
 
 ## ffmpeg commands
