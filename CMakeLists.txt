@@ -61,6 +61,7 @@ install(FILES
   )
 install(FILES
   urdf/pr2.urdf
+  urdf/pr2_simple.urdf
   urdf/pr2_with_set.urdf
   urdf/box.urdf
   urdf/rod.urdf
@@ -68,6 +69,7 @@ install(FILES
   )
 install(FILES
   srdf/pr2.srdf
+  srdf/pr2_simple.srdf
   srdf/pr2_with_set.srdf
   srdf/pr2_manipulation.srdf
   srdf/box.srdf
@@ -92,6 +94,10 @@ install (FILES
   src/hpp/corbaserver/pr2_with_set/robot.py
   src/hpp/corbaserver/pr2_with_set/__init__.py
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/pr2_with_set)
+install (FILES
+  src/hpp/corbaserver/pr2_simple/robot.py
+  src/hpp/corbaserver/pr2_simple/__init__.py
+  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/pr2_simple)
 
 # Installation for documentation
 install(FILES

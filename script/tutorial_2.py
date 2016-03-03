@@ -2,6 +2,7 @@
 
 from hpp.corbaserver import ProblemSolver
 from hpp.corbaserver.pr2 import Robot
+from hpp.corbaserver.pr2 import Robot
 robot = Robot ('pr2') #35 DOF
 robot.setJointBounds ("base_joint_xy", [-4, -3, -5, -3])
 ps = ProblemSolver (robot)
@@ -9,9 +10,10 @@ ps = ProblemSolver (robot)
 from hpp.gepetto import Viewer, PathPlayer
 #Viewer.withFloor = True
 r = Viewer (ps)
+
 pp = PathPlayer (robot.client, r)
 r.loadObstacleModel ("iai_maps","kitchen_area","kitchen_area") # visual kitchen
-r.loadObstacleModel ("iai_maps","floor","floor")
+r.loadObstacleModel ("iai_maps","old_floor","old_floor")
 
 q_init = robot.getCurrentConfig ()
 q_goal = q_init [::]
@@ -33,6 +35,20 @@ q_goal [rank] = -0.5
 r (q_goal)
 robot.isConfigValid(q_goal)
 
+lightName = "li"
+r.client.gui.addLight (lightName, r.windowId, 0.005, [0.5,0.5,0.5,0.5])
+r.client.gui.addToGroup (lightName, r.sceneName)
+r.client.gui.applyConfiguration (lightName, [-5,-6,2,1,0,0,0])
+r.client.gui.refresh ()
+
+lightName = "li2"
+r.client.gui.addLight (lightName, r.windowId, 0.005, [0.5,0.5,0.5,0.5])
+r.client.gui.addToGroup (lightName, r.sceneName)
+r.client.gui.applyConfiguration (lightName, [-2,-4,3,1,0,0,0])
+r.client.gui.applyConfiguration (lightName, [-4,-4,5,1,0,0,0])
+r.client.gui.refresh ()
+
+
 ## CONSTRAINTS ##
 # "torso_lift_joint" : do not constraint z axis because different for q_init and q_goal
 # constraint torso to be at position [-3.25, -4.0, 0.790675] in workspace frame
@@ -52,19 +68,20 @@ len(ps.getWaypoints (0))
 
 cl = robot.client
 import numpy as np
-
+"""
 ps.addPathOptimizer("Prune")
 ps.optimizePath (0)
 ps.numberPaths()
 ps.pathLength(ps.numberPaths()-1)
 len(ps.getWaypoints (ps.numberPaths()-1))
-
+"""
 ps.clearPathOptimizers()
 cl.problem.setAlphaInit (0.2)
 ps.addPathOptimizer("GradientBased")
 ps.optimizePath (0)
 ps.numberPaths()
 ps.pathLength(ps.numberPaths()-1)
+
 tGB = cl.problem.getTimeGB ()
 timeValuesGB = cl.problem.getTimeValues ()
 gainValuesGB = cl.problem.getGainValues ()
@@ -171,12 +188,12 @@ r.client.gui.refresh ()
 ## Video recording
 import time
 pp.dt = 0.02
-pp.speed=0.5
+pp.speed=0.6
 r(q_init)
 r.startCapture ("capture","png")
 r(q_init); time.sleep(0.2)
 r(q_init)
-pp(34)
+pp(0)
 r(q_goal); time.sleep(1);
 r.stopCapture ()
 
@@ -241,12 +258,14 @@ plot2DBaseCurvPath (r, cl, dt, ps.numberPaths()-1, "curvPath"+str(ps.numberPaths
 from viewer_display_library_OPTIM import plotPointBodyCurvPath
 from hpp.corbaserver import Client
 cl = robot.client
-dt = 0.06
+dt = 0.01
 jointName = 'r_wrist_flex_joint'
-plotPointBodyCurvPath (r, cl, robot, dt, 0, jointName, [0,0.12,0], 'pathPoint_'+jointName, [1,0.1,0.1,1])
-plotPointBodyCurvPath (r, cl, robot, dt, 35, jointName, [0,0.12,0], 'pathPointRS_'+jointName, [0.1,0.1,1,1])
+plotPointBodyCurvPath (r, cl, robot, dt, 0, jointName, [0,0.12,0], 'pathPoint2_'+jointName, [1,0.1,0.1,1])
+plotPointBodyCurvPath (r, cl, robot, dt, 33, jointName, [0,0.12,0], 'pathPointGB2_'+jointName, [0,0,1,1])
+
+#plotPointBodyCurvPath (r, cl, robot, dt, 35, jointName, [0,0.12,0], 'pathPointRS_'+jointName, [0.1,0.1,1,1])
 #plotPointBodyCurvPath (r, cl, robot, dt, 2, jointName, [0,0.12,0], 'pathPointPRS_'+jointName, [0.1,0.4,0.5,1])
-plotPointBodyCurvPath (r, cl, robot, dt, 34, jointName, [0,0.12,0], 'pathPointGB_'+jointName, [0.1,1,0.1,1])
+#plotPointBodyCurvPath (r, cl, robot, dt, 34, jointName, [0,0.12,0], 'pathPointGB_'+jointName, [0.1,1,0.1,1])
 
 jointName = 'base_joint_xy'
 plotPointBodyCurvPath (r, cl, robot, dt, 0, jointName, [0,0,0.1], 'pathPoint_'+str(0)+jointName, [1,0.1,0.1,1])
@@ -254,5 +273,35 @@ plotPointBodyCurvPath (r, cl, robot, dt, ps.numberPaths ()-1, jointName, [0,0,0.
 plotPointBodyCurvPath (r, cl, robot, dt, ps.numberPaths ()-1, jointName, [0,0,0.1], 'pathPointGB_'+str(ps.numberPaths ()-1)+jointName, [0.2,1,0.2,1])
 
 
-r.client.gui.removeFromGroup ('pathPointPRS_'+jointName, r.sceneName)
+r.client.gui.removeFromGroup ('pathPointGB2_'+jointName, r.sceneName)
+r.client.gui.setVisibility('kitchen_area/counter_top_island_link',"OFF")
+r.client.gui.setVisibility('kitchen_area/white_counter_top_island_link',"OFF")
+
+
+gui.writeNodeFile('kitchen_node?','kitchen.obj')
+
+## IMPORT SCENE AND CONFIGS TO BLENDER ##
+#gui.removeFromGroup("path0",r.sceneName)
+#gui.getNodeList()
+#gui.createGroup ('sphere_wp0_group')
+#gui.getGroupNodeList ('sphere_wp0_group')
+blender/urdf_to_blender.py -p pr2/ -i /local/mcampana/devel/hpp/src/hpp_tutorial/blender/bizu.urdf -o bizu_blend.py # generate robot loadable by Blender
+
+gui = r.client.gui
+#pathId = 0; dt = 0.02; gui.setCaptureTransform ("pr2_initial_traj.yaml", ["pr2"])
+pathId = 33; dt = 0.005; gui.setCaptureTransform ("pr2_optim_traj.yaml", ["pr2"])
+PL = ps.pathLength(pathId)
+FrameRange = np.arange(0,PL,dt)
+numberFrame = len(FrameRange)
+
+#r (q_init); robot.setCurrentConfig(q_init); gui.refresh (); gui.captureTransform ()
+#r (q_goal); robot.setCurrentConfig(q_goal); gui.refresh (); gui.captureTransform ()
+
+for t in FrameRange:
+        q = ps.configAtParam (pathId, t)#update robot configuration
+        r (q); robot.setCurrentConfig(q)
+        gui.refresh (); gui.captureTransform ()
+
+r (q_goal); robot.setCurrentConfig(q_goal); gui.refresh (); gui.captureTransform ()
+
 
