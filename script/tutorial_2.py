@@ -1,8 +1,9 @@
 #/usr/bin/env python
+#blender/urdf_to_blender.py -p pr2/ -i /local/mcampana/devel/hpp/src/hpp_tutorial/urdf/pr2_full.urdf -o pr2_full_blend.py
 
 from hpp.corbaserver import ProblemSolver
-from hpp.corbaserver.pr2 import Robot
-from hpp.corbaserver.pr2 import Robot
+#from hpp.corbaserver.pr2 import Robot
+from hpp.corbaserver.pr2_full import Robot
 robot = Robot ('pr2') #35 DOF
 robot.setJointBounds ("base_joint_xy", [-4, -3, -5, -3])
 ps = ProblemSolver (robot)
@@ -12,8 +13,8 @@ from hpp.gepetto import Viewer, PathPlayer
 r = Viewer (ps)
 
 pp = PathPlayer (robot.client, r)
-r.loadObstacleModel ("iai_maps","kitchen_area","kitchen_area") # visual kitchen
-r.loadObstacleModel ("iai_maps","old_floor","old_floor")
+#r.loadObstacleModel ("iai_maps","kitchen_area","kitchen_area") # visual kitchen
+#r.loadObstacleModel ("iai_maps","old_floor","old_floor")
 
 q_init = robot.getCurrentConfig ()
 q_goal = q_init [::]

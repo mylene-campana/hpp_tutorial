@@ -59,21 +59,10 @@ install(FILES
   package.xml
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
   )
-install(FILES
-  urdf/pr2.urdf
-  urdf/pr2_simple.urdf
-  urdf/pr2_with_set.urdf
-  urdf/box.urdf
-  urdf/rod.urdf
+install(DIRECTORY urdf/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
   )
-install(FILES
-  srdf/pr2.srdf
-  srdf/pr2_simple.srdf
-  srdf/pr2_with_set.srdf
-  srdf/pr2_manipulation.srdf
-  srdf/box.srdf
-  srdf/rod.srdf
+install(DIRECTORY srdf/
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/srdf
   )
 install(DIRECTORY meshes/
@@ -98,6 +87,11 @@ install (FILES
   src/hpp/corbaserver/pr2_simple/robot.py
   src/hpp/corbaserver/pr2_simple/__init__.py
   DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/pr2_simple)
+install (FILES
+  src/hpp/corbaserver/pr2_full/robot.py
+  src/hpp/corbaserver/pr2_full/__init__.py
+  DESTINATION ${PYTHON_SITELIB}/hpp/corbaserver/pr2_full)
+
 
 # Installation for documentation
 install(FILES
