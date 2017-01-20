@@ -13,8 +13,8 @@ from hpp.gepetto import Viewer, PathPlayer
 r = Viewer (ps)
 
 pp = PathPlayer (robot.client, r)
-#r.loadObstacleModel ("iai_maps","kitchen_area","kitchen_area") # visual kitchen
-#r.loadObstacleModel ("iai_maps","old_floor","old_floor")
+r.loadObstacleModel ("iai_maps","kitchen_area","kitchen_area") # visual kitchen
+r.loadObstacleModel ("iai_maps","old_floor","old_floor")
 
 q_init = robot.getCurrentConfig ()
 q_goal = q_init [::]

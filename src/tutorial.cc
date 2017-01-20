@@ -24,6 +24,7 @@
 #include <hpp/core/constraint-set.hh>
 #include <hpp/core/path-planner.hh>
 #include <hpp/core/path-validation.hh>
+#include <hpp/core/problem-solver.hh>
 #include <hpp/core/roadmap.hh>
 #include <hpp/core/steering-method.hh>
 
@@ -59,6 +60,8 @@ namespace hpp {
       /// We will see how to implement a basic PRM algorithm.
       virtual void oneStep ()
       {
+	core::ValidationReportPtr_t configReport;
+	core::PathValidationReportPtr_t pathReport;
 	// Retrieve the robot the problem has been defined for.
 	model::DevicePtr_t robot (problem ().robot ());
 	// Retrieve the path validation algorithm associated to the problem
@@ -76,7 +79,7 @@ namespace hpp {
 	core::ConfigurationPtr_t qrand;
 	do {
 	  qrand = shooter_->shoot ();
-	} while (!configValidations->validate (*qrand));
+	} while (!configValidations->validate (*qrand, configReport));
 	// Add qrand as a new node
 	core::NodePtr_t newNode = r->addNode (qrand);
 	// try to connect the random configuration to each connected component
@@ -95,7 +98,7 @@ namespace hpp {
 	    core::PathPtr_t localPath = (*sm) (*qnear, *qrand);
 	    // validate local path
 	    core::PathPtr_t validPart;
-	    if (pathValidation->validate (localPath, false, validPart)) {
+	    if (pathValidation->validate (localPath, false, validPart, pathReport)) {
 	      // Create node and edges with qrand and the local path
 	      r->addEdge (nearest, newNode, localPath);
 	      r->addEdge (newNode, nearest, localPath->reverse ());
