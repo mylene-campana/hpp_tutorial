@@ -10,6 +10,7 @@ sleep 1s
 xterm -e hppcorbaserver &
 sleep 1s
 # In second terminal : python script
-xterm -e python tutorial_autoRun.py &
-sleep 300s
+#xterm -e python tutorial_autoRun.py &
+xterm -e python -i tutorial_4_toBlender.py &
+sleep 600s
 killall xterm
