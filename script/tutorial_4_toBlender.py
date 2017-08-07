@@ -14,7 +14,9 @@ pp = PathPlayer (robot.client, r)
 q_0 = robot.getCurrentConfig(); r(q_0)
 
 lightName = "li1"; r.client.gui.addLight (lightName, r.windowId, 0.001, [0.4,0.4,0.4,0.5]); r.client.gui.addToGroup (lightName, r.sceneName); r.client.gui.applyConfiguration (lightName, [0,1,1,1,0,0,0])
-lightName = "li2"; r.client.gui.addLight (lightName, r.windowId, 0.001, [0.4,0.4,0.4,0.5]); r.client.gui.addToGroup (lightName, r.sceneName); r.client.gui.applyConfiguration (lightName, [1,0,2,1,0,0,0])
+lightName = "li11"; r.client.gui.addLight (lightName, r.windowId, 0.001, [0.4,0.4,0.4,0.5]); r.client.gui.addToGroup (lightName, r.sceneName); r.client.gui.applyConfiguration (lightName, [0,-1,1,1,0,0,0])
+lightName = "li3"; r.client.gui.addLight (lightName, r.windowId, 0.001, [0.4,0.4,0.4,0.5]); r.client.gui.addToGroup (lightName, r.sceneName); r.client.gui.applyConfiguration (lightName, [0,-1,2,1,0,0,0])
+lightName = "li4"; r.client.gui.addLight (lightName, r.windowId, 0.001, [0.4,0.4,0.4,0.5]); r.client.gui.addToGroup (lightName, r.sceneName); r.client.gui.applyConfiguration (lightName, [2,0,1,1,0,0,0])
 r.client.gui.refresh ()
 
 q1 = robot.getCurrentConfig ()
@@ -57,17 +59,17 @@ ps.optimizePath (pathIdInit)
 
 ps.numberPaths()
 pathIdGB = ps.numberPaths()-1
-print("length after GB= " + str(ps.pathLength(pathIdGB)))
-print("duration of optim GB= " + str(ps.client.problem.getTimeGB ())
+print("length after GB= " + str(ps.pathLength(pathIdGB))) # 1.4445
+print("duration of optim GB= " + str(ps.client.problem.getTimeGB ())) # 8.11  (with logs)
 pp.speed=1.
 #pp(pathIdGB)
 
-"""
+
 ps.clearPathOptimizers()
 ps.addPathOptimizer('RandomShortcut')
 ps.optimizePath (pathIdInit)
 pathIdRS = ps.numberPaths()-1
-print("length after RS= " + str(ps.pathLength(pathIdRS)))
+print("length after RS= " + str(ps.pathLength(pathIdRS))) # 2.74
 pp.speed=1.
 #pp(pathIdRS)
 
@@ -76,10 +78,10 @@ ps.clearPathOptimizers()
 ps.addPathOptimizer('PartialShortcut')
 ps.optimizePath (pathIdInit)
 pathIdPRS = ps.numberPaths()-1
-print("length after PRS= " + str(ps.pathLength(pathIdPRS)))
+print("length after PRS= " + str(ps.pathLength(pathIdPRS))) # 20.03
 pp.speed=1.
 #pp(pathIdPRS)
-"""
+
 
 ### BLENDER EXPORTS ###
 
@@ -89,10 +91,10 @@ pp.speed=1.
 """
 from viewer_library import *
 
-pathToYamlFile (ps, r, "pr2_crossingArms_init", robotName, pathIdInit, q2, 0.06)
-pathToYamlFile (ps, r, "pr2_crossingArms_GB", robotName, pathIdGB, q2, 0.01)
-pathToYamlFile (ps, r, "pr2_crossingArms_RS", robotName, pathIdRS, q2, 0.01)
-pathToYamlFile (ps, r, "pr2_crossingArms_PRS", robotName, pathIdPRS, q2, 0.01)
+pathToYamlFile (ps, r, "pr2_crossingArms_init.yaml", robotName, pathIdInit, q2, 0.06)
+pathToYamlFile (ps, r, "pr2_crossingArms_GB.yaml", robotName, pathIdGB, q2, 0.01)
+pathToYamlFile (ps, r, "pr2_crossingArms_RS.yaml", robotName, pathIdRS, q2, 0.02)
+pathToYamlFile (ps, r, "pr2_crossingArms_PRS.yaml", robotName, pathIdPRS, q2, 0.06)
 
 """
 
